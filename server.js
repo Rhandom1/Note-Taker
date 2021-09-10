@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 //one period stays at current level
-let db = require('./Develop/db/db.json')
+let db = require('./db/db.json')
 const uniqId = require('uniqid');
 const fs = require('fs');
 
@@ -31,10 +31,6 @@ app.post('/api/notes', (req, res) => {
   //stops the connection
   res.end()
 })
-//path is a built in package to Node that goes through the local file system to show a specific file
-app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, "./public/notes.html")));
-//* is a catchall to catch anything that has not been done and points to a file to render
-app.get('*', (req, res) => res.sendFile(path.join(__dirname, "./public/index.html")));
 
 app.delete("/api/notes/:id", function(req, res) {
   let noteID = req.params.id;
@@ -49,6 +45,12 @@ app.delete("/api/notes/:id", function(req, res) {
   fs.writeFileSync(__dirname + "/db/db.json", JSON.stringify(savedNotes));
   res.end();
 })
+//path is a built in package to Node that goes through the local file system to show a specific file
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, "./public/notes.html")));
+//* is a catchall to catch anything that has not been done and points to a file to render
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, "./public/index.html")));
+
+
 
 
 app.listen(PORT, () =>
